@@ -1,4 +1,4 @@
-import { ArrowRight, MousePointer2, Sparkles } from "lucide-react";
+import { ArrowRight, MousePointer2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import homeVisual from "@/assets/ascend-home-visual.png";
@@ -30,14 +30,11 @@ export default function Hero() {
           transition={{ duration: 0.75 }}
           className="relative z-10"
         >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white/70 backdrop-blur-xl">
-            <Sparkles className="h-4 w-4 text-[#e5a345]" />
-            Future-ready digital experiences
-          </div>
-
           <h1 className="max-w-4xl overflow-visible text-5xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:text-6xl md:text-7xl xl:text-[5.9rem]">
             Build beyond
-            <span className="brand-gradient-text block pb-[0.10em]">good enough.</span>
+            <span className="brand-gradient-text block pb-[0.10em]">
+              good enough.
+            </span>
           </h1>
 
           <p className="mt-7 max-w-2xl text-base leading-8 text-white/64 sm:text-lg">
@@ -75,8 +72,8 @@ export default function Hero() {
           <div className="absolute -left-8 top-12 h-48 w-48 rounded-full bg-[#d98b2b]/16 blur-[80px]" />
           <div className="absolute -right-8 bottom-10 h-52 w-52 rounded-full bg-[#0d5978]/22 blur-[90px]" />
 
-          <div className="relative w-[92%] overflow-hidden rounded-[2rem] bg-[#06141d] shadow-[0_35px_100px_rgba(0,0,0,.30)]">
-            <div className="pointer-events-none absolute inset-0 z-10 rounded-[2rem]" />
+          <div className="relative w-[92%] overflow-hidden rounded-[2rem] border border-white/10 bg-[#06141d] shadow-[0_35px_100px_rgba(0,0,0,.30)]">
+            <div className="pointer-events-none absolute inset-0 z-10 rounded-[2rem] ring-1 ring-inset ring-white/[0.04]" />
 
             <img
               src={homeVisual}
