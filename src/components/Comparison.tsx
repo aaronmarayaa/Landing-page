@@ -82,11 +82,6 @@ export default function Comparison() {
             ))}
           </div>
         </div>
-
-        <p className="mt-5 text-xs leading-6 text-[#7a8589]">
-          Comparison reflects the service model presented by Ascend Logix and may
-          vary across individual agencies.
-        </p>
       </div>
     </section>
   );
