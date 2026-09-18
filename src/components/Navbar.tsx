@@ -1,7 +1,7 @@
 import { useEffect, useState, type MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import symbol from "@/assets/ascend-symbol.png";
+import symbol from "@/assets/ascend-Horizontal.png";
 
 const links = [
   { label: "Home", href: "/" },
@@ -77,7 +77,7 @@ export default function Navbar() {
           <img
             src={symbol}
             alt="Ascend Logix"
-            className="h-10 w-10 object-contain sm:h-11 sm:w-11"
+            className="h-35 w-35 object-contain sm:h-35 sm:w-35"
           />
         </a>
 
