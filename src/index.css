@@ -1,0 +1,485 @@
+@import "tailwindcss";
+
+:root {
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #ffffff;
+  background: #06141d;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
+  background: #06141d;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #06141d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: #d98b2b;
+  color: #ffffff;
+}
+
+.brand-gradient-text {
+  background: linear-gradient(105deg, #e6a141 5%, #d28a2e 35%, #5f7070 67%, #167397 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Traveling signal / circuit animations                                      */
+/* -------------------------------------------------------------------------- */
+
+.signal-grid,
+.circuit-grid,
+.about-power-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+}
+
+.signal-grid {
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, black 10%, rgba(0, 0, 0, 0.8), transparent 100%);
+}
+
+.circuit-grid {
+  background-size: 30px 30px;
+  mask-image: radial-gradient(circle at center, black 15%, rgba(0,0,0,.85) 50%, transparent 95%);
+}
+
+.about-power-grid {
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at 50% 35%, black 18%, rgba(0,0,0,.82) 56%, transparent 96%);
+}
+
+/*
+  Important hover behavior:
+  - no illuminated dash is visible on hover entry
+  - after a short delay, the pulse appears and immediately moves
+  - the pulse disappears at the end of the route before the next loop
+  This prevents the tiny "frozen" light users can notice at animation start.
+*/
+.signal-run,
+.circuit-run,
+.about-power-run {
+  opacity: 0;
+  stroke-dasharray: 7 93;
+  stroke-dashoffset: 100;
+  will-change: stroke-dashoffset, opacity;
+}
+
+/* Service card signals */
+.signal-card:hover .signal-run {
+  animation-name: signal-travel-clean;
+  animation-duration: 1.35s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: calc(90ms + var(--delay));
+  animation-fill-mode: backwards;
+}
+
+/* Legacy Foundation component, if you decide to use it again later */
+.circuit-board:hover .circuit-run {
+  animation-name: signal-travel-clean;
+  animation-duration: 1.8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: calc(100ms + var(--circuit-delay));
+  animation-fill-mode: backwards;
+}
+
+/* About Us: logo powers outward toward the three cards */
+.about-power:hover .about-power-run {
+  animation-name: about-power-outward;
+  animation-duration: 1.55s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--power-delay);
+  animation-fill-mode: backwards;
+}
+
+.about-power-dot {
+  transition:
+    stroke 0.35s ease,
+    fill 0.35s ease,
+    filter 0.35s ease;
+  transition-delay: 0ms;
+}
+
+.about-power:hover .about-power-dot {
+  animation: about-dot-power 1.55s ease-in-out infinite;
+  animation-delay: var(--dot-delay);
+  animation-fill-mode: backwards;
+}
+
+.about-power:hover .ascend-symbol-core {
+  border-color: rgba(217, 139, 43, 0.28);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.58),
+    0 0 42px rgba(217, 139, 43, 0.08),
+    0 0 54px rgba(13, 89, 120, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.about-card-power {
+  background: linear-gradient(90deg, transparent, #d98b2b, #1680a5, transparent);
+  box-shadow: 0 0 18px rgba(217, 139, 43, 0.35);
+}
+
+.about-power:hover .about-card-power {
+  animation: card-receive-power 1.55s ease-out infinite;
+  animation-delay: var(--card-delay);
+  animation-fill-mode: backwards;
+}
+
+.about-power:hover .about-powered-card {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Start completely invisible, then immediately begin moving. */
+@keyframes signal-travel-clean {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 100;
+  }
+  3% {
+    opacity: 1;
+    stroke-dashoffset: 99;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+  SVG path direction is from the central Ascend core toward each card,
+  so decreasing dashoffset makes the illuminated dash travel outward.
+*/
+@keyframes about-power-outward {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 100;
+  }
+  3% {
+    opacity: 1;
+    stroke-dashoffset: 99;
+  }
+  84% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes about-dot-power {
+  0%,
+  8% {
+    stroke: rgba(255, 255, 255, 0.18);
+    fill: #05090c;
+    filter: none;
+  }
+  24%,
+  52% {
+    stroke: rgba(217, 139, 43, 0.72);
+    fill: rgba(217, 139, 43, 0.18);
+    filter: drop-shadow(0 0 7px rgba(217, 139, 43, 0.52));
+  }
+  76%,
+  100% {
+    stroke: rgba(255, 255, 255, 0.18);
+    fill: #05090c;
+    filter: none;
+  }
+}
+
+@keyframes card-receive-power {
+  0%,
+  10% {
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0.25);
+  }
+  24%,
+  48% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) scaleX(0.55);
+  }
+}
+
+@media (max-width: 767px) {
+  .about-power {
+    /* On small screens the network lines are hidden; the cards remain usable. */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-card:hover .signal-run,
+  .circuit-board:hover .circuit-run,
+  .about-power:hover .about-power-run,
+  .about-power:hover .about-power-dot,
+  .about-power:hover .about-card-power {
+    animation: none;
+  }
+
+  .signal-card:hover .signal-run,
+  .circuit-board:hover .circuit-run,
+  .about-power:hover .about-power-run {
+    opacity: 0.55;
+    stroke-dasharray: none;
+  }
+}
+
+
+/* V4 standalone Ascend Core: pulse begins dark, then travels outward smoothly. */
+.circuit-board:hover .circuit-run {
+  animation-name: circuit-outward-clean;
+  animation-duration: 1.75s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--circuit-delay);
+  animation-fill-mode: backwards;
+}
+
+@keyframes circuit-outward-clean {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 100;
+  }
+  3% {
+    opacity: 1;
+    stroke-dashoffset: 99;
+  }
+  84% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* V5 Showcase — Ascend Core powers the live website carousel                 */
+/* -------------------------------------------------------------------------- */
+
+.showcase-power-run {
+  opacity: 0;
+  stroke-dasharray: 7 93;
+  stroke-dashoffset: 100;
+  will-change: stroke-dashoffset, opacity;
+}
+
+.showcase-power:hover .showcase-power-run {
+  animation-name: showcase-signal-outward;
+  animation-duration: 1.65s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--showcase-delay);
+  animation-fill-mode: backwards;
+}
+
+.showcase-power-dot {
+  transition:
+    stroke 0.35s ease,
+    fill 0.35s ease,
+    filter 0.35s ease;
+}
+
+.showcase-power:hover .showcase-power-dot {
+  animation: showcase-node-power 1.65s ease-in-out infinite;
+  animation-delay: var(--showcase-dot-delay);
+  animation-fill-mode: backwards;
+}
+
+.showcase-power:hover .showcase-core {
+  border-color: rgba(217, 139, 43, 0.28);
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.62),
+    0 0 48px rgba(217, 139, 43, 0.09),
+    0 0 60px rgba(13, 89, 120, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.showcase-browser-glow {
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(217, 139, 43, 0.0),
+    0 0 0 rgba(13, 89, 120, 0);
+}
+
+.showcase-power:hover .showcase-browser-glow {
+  animation: showcase-frame-receive 1.65s ease-out infinite;
+  animation-delay: 520ms;
+  animation-fill-mode: backwards;
+}
+
+@keyframes showcase-signal-outward {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 100;
+  }
+  3% {
+    opacity: 1;
+    stroke-dashoffset: 99;
+  }
+  84% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes showcase-node-power {
+  0%,
+  8% {
+    stroke: rgba(255, 255, 255, 0.18);
+    fill: #030709;
+    filter: none;
+  }
+  25%,
+  48% {
+    stroke: rgba(217, 139, 43, 0.72);
+    fill: rgba(217, 139, 43, 0.17);
+    filter: drop-shadow(0 0 7px rgba(217, 139, 43, 0.48));
+  }
+  78%,
+  100% {
+    stroke: rgba(255, 255, 255, 0.18);
+    fill: #030709;
+    filter: none;
+  }
+}
+
+@keyframes showcase-frame-receive {
+  0%,
+  12% {
+    opacity: 0;
+    box-shadow:
+      inset 0 0 0 1px rgba(217, 139, 43, 0),
+      0 0 0 rgba(13, 89, 120, 0);
+  }
+  28%,
+  52% {
+    opacity: 1;
+    box-shadow:
+      inset 0 0 0 1px rgba(217, 139, 43, 0.32),
+      0 0 38px rgba(13, 89, 120, 0.11);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    box-shadow:
+      inset 0 0 0 1px rgba(217, 139, 43, 0),
+      0 0 0 rgba(13, 89, 120, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-power:hover .showcase-power-run,
+  .showcase-power:hover .showcase-power-dot,
+  .showcase-power:hover .showcase-browser-glow {
+    animation: none;
+  }
+
+  .showcase-power:hover .showcase-power-run {
+    opacity: 0.5;
+    stroke-dasharray: none;
+  }
+}
+
+
+/* V6: three showcase frames receive power in a small cascade. */
+.showcase-power:hover .showcase-browser-glow {
+  animation-name: showcase-frame-receive-v6;
+  animation-duration: 1.65s;
+  animation-timing-function: ease-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--frame-delay);
+  animation-fill-mode: backwards;
+}
+
+@keyframes showcase-frame-receive-v6 {
+  0%,
+  12% {
+    opacity: 0;
+    box-shadow:
+      inset 0 0 0 1px rgba(217, 139, 43, 0),
+      0 0 0 rgba(13, 89, 120, 0);
+  }
+  27%,
+  52% {
+    opacity: 1;
+    box-shadow:
+      inset 0 0 0 1px rgba(217, 139, 43, 0.30),
+      0 0 34px rgba(13, 89, 120, 0.10);
+  }
+  80%,
+  100% {
+    opacity: 0;
+    box-shadow:
+      inset 0 0 0 1px rgba(217, 139, 43, 0),
+      0 0 0 rgba(13, 89, 120, 0);
+  }
+}
