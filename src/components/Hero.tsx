@@ -50,8 +50,17 @@ export default function Hero() {
               </a>
             </Button>
 
-            <Button asChild size="lg" variant="outline">
-              <a href="#services">Explore Services</a>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-0 bg-white/15 p-[1px] text-white shadow-none transition-[background,box-shadow] duration-500 hover:bg-[linear-gradient(100deg,#f2a33a_0%,#d98b2b_32%,#0d5978_72%,#1680a5_100%)] hover:shadow-[0_0_18px_rgba(217,139,43,.18),0_0_34px_rgba(13,89,120,.22)]"
+            >
+              <a href="#services">
+                <span className="flex h-full w-full items-center justify-center rounded-full bg-[#071923] px-7 transition-colors duration-500 hover:bg-[#071923]/96">
+                  Explore Services
+                </span>
+              </a>
             </Button>
           </div>
 
@@ -72,8 +81,8 @@ export default function Hero() {
           <div className="absolute -left-8 top-12 h-48 w-48 rounded-full bg-[#d98b2b]/16 blur-[80px]" />
           <div className="absolute -right-8 bottom-10 h-52 w-52 rounded-full bg-[#0d5978]/22 blur-[90px]" />
 
-          <div className="relative w-[92%] overflow-hidden rounded-[2rem] border border-white/10 bg-[#06141d] shadow-[0_35px_100px_rgba(0,0,0,.30)]">
-            <div className="pointer-events-none absolute inset-0 z-10 rounded-[2rem] ring-1 ring-inset ring-white/[0.04]" />
+          <div className="relative w-[92%] overflow-hidden rounded-[2rem]">
+            <div className="pointer-events-none absolute inset-0 z-10 rounded-[2rem]" />
 
             <img
               src={homeVisual}

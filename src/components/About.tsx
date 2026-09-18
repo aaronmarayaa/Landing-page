@@ -49,9 +49,9 @@ export default function About() {
           <div>
             <p className="max-w-3xl text-2xl font-medium leading-[1.45] tracking-[-0.025em] text-[#1f292d] sm:text-3xl">
               At <span className="text-[#c47d23]">Ascend</span>{" "}
-              <span className="text-[#0d5978]">Logix</span>, we build digital
-              experiences from the ground up—because your business deserves more
-              than a one-size-fits-all solution.
+              <span className="text-[#0d5978]">Logix</span>, 
+                we build digital solutions that fit your business, 
+                your goals and your needs.
             </p>
 
             <p className="mt-7 max-w-3xl text-base leading-8 text-[#4d5a5f] sm:text-lg">

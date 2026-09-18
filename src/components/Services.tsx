@@ -1,48 +1,56 @@
 import {
-  Braces,
-  ChartNoAxesCombined,
+  Lightbulb,
+  Megaphone,
+  Monitor,
   Palette,
-  PenTool,
   Search,
+  Share2,
 } from "lucide-react";
 import SectionHeading from "./SectionHeading";
 import TechSignalCard from "./TechSignalCard";
 
 const services = [
   {
-    icon: PenTool,
-    title: "Web Design",
+    icon: Lightbulb,
+    title: "Marketing Strategy & Consulting",
     description:
-      "Modern, responsive interfaces built around usability, visual hierarchy, accessibility, and your brand identity.",
-    tags: ["UI/UX", "Responsive", "Brand-first"],
+      "Free marketing plans, competitor research, campaign strategy, and audience targeting built around your business goals.",
+    tags: ["Free Plans", "Research", "Strategy"],
   },
   {
-    icon: Braces,
-    title: "Web Development",
+    icon: Monitor,
+    title: "Web Design & Development",
     description:
-      "Custom websites developed from the ground up for speed, flexibility, maintainability, and long-term scalability.",
-    tags: ["React", "Performance", "Scalable"],
+      "Business websites, landing pages, website redesigns, responsive development, and basic SEO setup for a strong online presence.",
+    tags: ["Websites", "Responsive", "Basic SEO"],
   },
   {
     icon: Palette,
     title: "Graphic Design",
     description:
-      "Strategic visuals that give your brand a distinctive and consistent identity across modern digital platforms.",
-    tags: ["Branding", "Creatives", "Identity"],
+      "Marketing materials including website graphics, social media creatives, ads, logos, business cards, flyers, brochures, posters, banners, and more.",
+    tags: ["Branding", "Creatives", "Print & Digital"],
   },
   {
-    icon: ChartNoAxesCombined,
-    title: "Social Media Marketing",
+    icon: Megaphone,
+    title: "Digital Advertisement",
     description:
-      "Creative content and campaign systems designed to strengthen your online presence and connect with the right audience.",
-    tags: ["Content", "Campaigns", "Growth"],
+      "Meta Ads and Google Ads campaign setup, audience targeting, optimization, and reporting designed to support measurable growth.",
+    tags: ["Meta Ads", "Google Ads", "Reporting"],
+  },
+  {
+    icon: Share2,
+    title: "Social Media Management",
+    description:
+      "Content planning, creation, posting, caption writing, scheduling, and reporting to keep your social presence consistent and active.",
+    tags: ["Content", "Scheduling", "Management"],
   },
   {
     icon: Search,
-    title: "SEO & PPC Marketing",
+    title: "Search Engine Optimization",
     description:
-      "Search and paid-media strategies focused on helping the right customers discover your business at the right moment.",
-    tags: ["SEO", "PPC", "Analytics"],
+      "On-page SEO, blog post creation, keyword optimization, local SEO, Google Business Profile support, and ongoing website improvement.",
+    tags: ["On-page SEO", "Local SEO", "Keywords"],
   },
 ];
 
@@ -55,7 +63,8 @@ export default function Services() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="What we do"
-          title="Digital systems designed to work together."
+          title="Digital services designed to work together."
+          description="From strategy and websites to advertising, social media, design, and SEO, Ascend Logix brings the essential parts of your digital presence into one connected approach."
         />
 
         <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -64,13 +73,6 @@ export default function Services() {
               key={service.title}
               {...service}
               index={index}
-              className={
-                index === 3
-                  ? "lg:col-span-2"
-                  : index === 4
-                    ? "md:col-span-2 lg:col-span-1"
-                    : ""
-              }
             />
           ))}
         </div>
