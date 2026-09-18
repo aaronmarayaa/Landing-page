@@ -1,14 +1,14 @@
 const quickLinks = [
-  ["Home", "#home"],
-  ["About", "#about"],
-  ["Work", "#work"],
-  ["Services", "#services"],
-  ["Contact", "#contact"],
+  ["Home", "/"],
+  ["About", "/#about"],
+  ["Work", "/#work"],
+  ["Services", "/services"],
+  ["Contact", "/contact"],
 ];
 
 const facebookUrl =
   "https://www.facebook.com/profile.php?id=61572951032170";
-
+const instagramUrl = "https://www.instagram.com/ascendlogix/";
 const emailUrl =
   "mailto:ascendlogix.ca@gmail.com?subject=Website%20Inquiry";
 
@@ -57,6 +57,14 @@ export default function Footer() {
                 className="text-base text-white/78 transition-colors duration-300 hover:text-[#dfa047]"
               >
                 Facebook
+              </a>
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="text-base text-white/78 transition-colors duration-300 hover:text-[#dfa047]"
+              >
+                Instagram
               </a>
             </div>
           </div>
