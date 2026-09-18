@@ -10,7 +10,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ServicesPage from "@/pages/ServicesPage";
 import ContactPage from "@/pages/ContactPage";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 function currentPath() {
   const path = window.location.pathname.replace(/\/+$/, "");
@@ -29,6 +29,43 @@ function StandardPage({ children }: { children: ReactNode }) {
 
 export default function App() {
   const path = currentPath();
+
+  useEffect(() => {
+    if (path !== "/" || !window.location.hash) return;
+
+    const sectionId = decodeURIComponent(window.location.hash.slice(1));
+
+    const scrollToSection = () => {
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+
+      const navbarOffset = 92;
+      const top =
+        section.getBoundingClientRect().top +
+        window.scrollY -
+        navbarOffset;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
+    };
+
+    // React needs to render the homepage sections before we can reliably
+    // scroll to the hash after arriving from /services or /contact.
+    let secondFrame = 0;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(scrollToSection);
+    });
+
+    const fallback = window.setTimeout(scrollToSection, 140);
+
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      window.cancelAnimationFrame(secondFrame);
+      window.clearTimeout(fallback);
+    };
+  }, [path]);
 
   if (path === "/services") {
     return (

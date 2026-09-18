@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import symbol from "@/assets/ascend-Horizontal.png";
+import symbol from "@/assets/ascend-symbol.png";
 
 const links = [
   { label: "Home", href: "/" },
@@ -22,6 +22,44 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const handleNavClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    setOpen(false);
+
+    if (!href.startsWith("/#")) return;
+
+    const sectionId = href.slice(2);
+    const onHomepage =
+      window.location.pathname === "/" ||
+      window.location.pathname === "";
+
+    // If we're already on the homepage, scroll directly instead of causing
+    // another page load.
+    if (onHomepage) {
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+
+      event.preventDefault();
+
+      const navbarOffset = 92;
+      const top =
+        section.getBoundingClientRect().top +
+        window.scrollY -
+        navbarOffset;
+
+      window.history.pushState(null, "", `/#${sectionId}`);
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
+    }
+
+    // If we're on /services or /contact, let the normal /#section navigation
+    // happen. App.tsx will scroll to the requested section after Home renders.
+  };
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
@@ -39,7 +77,7 @@ export default function Navbar() {
           <img
             src={symbol}
             alt="Ascend Logix"
-            className="h-10 w-10 object-contain sm:h-40 sm:w-40"
+            className="h-10 w-10 object-contain sm:h-11 sm:w-11"
           />
         </a>
 
@@ -48,6 +86,7 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
+              onClick={(event) => handleNavClick(event, link.href)}
               className="group/nav relative py-2 text-sm font-medium"
             >
               <span className="block text-white/70 transition-opacity duration-300 group-hover/nav:opacity-0">
@@ -89,7 +128,7 @@ export default function Navbar() {
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => handleNavClick(event, link.href)}
                   className={`group/mobile relative flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-medium transition-colors duration-300 hover:bg-white/[0.055] ${
                     index !== links.length - 1
                       ? "border-b border-white/[0.045]"
