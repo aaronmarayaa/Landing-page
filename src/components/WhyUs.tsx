@@ -50,7 +50,13 @@ export default function WhyUs() {
         <div className="grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:gap-20">
           <SectionHeading
             eyebrow="Why Ascend Logix"
-            title="More control. Less compromise."
+            title={
+              <>
+                More control.
+                <br />
+                Less compromise.
+              </>
+            }
             description="Your reference graphic highlights the trade-offs between custom development and drag-and-drop platforms. Our approach keeps the flexibility and professional control of custom work while making the final experience easy for your audience."
           />
 

@@ -42,7 +42,7 @@ export default function Comparison() {
             What makes us different.
           </h2>
           <p className="mt-5 max-w-3xl text-base leading-8 text-[#59666a] sm:text-lg">
-            A more direct, flexible working relationship—without giving up the
+            A more direct, flexible working relationship, without giving up the
             reporting, multi-channel support, and long-term thinking you expect
             from a modern agency.
           </p>

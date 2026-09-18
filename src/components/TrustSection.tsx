@@ -11,7 +11,7 @@ const trustPoints = [
     icon: MessageSquareText,
     supportingIcon: Handshake,
     title: "Transparent Communication",
-    text: "We believe in honesty from day one. No unrealistic promises—just clear communication, realistic expectations, and results you can actually measure.",
+    text: "We believe in honesty from day one. No unrealistic promises, just clear communication, realistic expectations, and results you can actually measure.",
     eyebrow: "Clear from day one",
     accent: "orange",
   },
