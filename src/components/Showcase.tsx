@@ -11,22 +11,16 @@ import {
 
 const projects = [
   {
-    name: "Mielle Wellness",
-    url: "https://www.miellewellness.ca/",
-    domain: "miellewellness.ca",
-    category: "Wellness",
-  },
-  {
     name: "RMN Aesthetics",
     url: "https://www.rmnaesthetics.com/",
     domain: "rmnaesthetics.com",
     category: "Aesthetics",
   },
   {
-    name: "Lynx Kin",
-    url: "https://www.lynxkin.ca/",
-    domain: "lynxkin.ca",
-    category: "Digital Experience",
+    name: "Mielle Wellness",
+    url: "https://www.miellewellness.ca/",
+    domain: "miellewellness.ca",
+    category: "Wellness",
   },
   {
     name: "FNCC Inc.",
@@ -39,6 +33,12 @@ const projects = [
     url: "https://www.championbuild.us/",
     domain: "championbuild.us",
     category: "Construction",
+  },
+  {
+    name: "Lynx Kin",
+    url: "https://www.lynxkin.ca/",
+    domain: "lynxkin.ca",
+    category: "Digital Experience",
   },
 ];
 
@@ -187,6 +187,16 @@ export default function Showcase() {
           onMouseEnter={() => setHovering(true)}
           onMouseLeave={() => setHovering(false)}
         >
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/35">
+              Use arrows to browse
+            </p>
+
+            <span className="text-[11px] text-white/24">
+              {activeIndex + 1} / {projects.length}
+            </span>
+          </div>
+
           <div
             className="relative h-[410px] overflow-hidden rounded-[1.6rem] sm:h-[450px] md:h-[500px] lg:h-[565px] xl:h-[615px]"
           >
