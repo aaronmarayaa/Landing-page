@@ -18,9 +18,13 @@ const instagramUrl = "https://www.instagram.com/ascendlogix/";
 
 type ContactProps = {
   showForm?: boolean;
+  compact?: boolean;
 };
 
-export default function Contact({ showForm = false }: ContactProps) {
+export default function Contact({
+  showForm = false,
+  compact = false,
+}: ContactProps) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
     "idle"
   );
@@ -85,7 +89,11 @@ export default function Contact({ showForm = false }: ContactProps) {
     <section
       id="contact"
       className={`relative overflow-hidden ${
-        showForm ? "pb-24 pt-28 sm:pb-32 sm:pt-32" : "py-24 sm:py-32"
+        showForm
+          ? "pb-24 pt-28 sm:pb-32 sm:pt-32"
+          : compact
+            ? "py-5 sm:py-6 lg:py-7"
+            : "py-24 sm:py-32"
       }`}
     >
       <div className="absolute inset-0 -z-30 bg-[#06141d]" />
@@ -100,7 +108,13 @@ export default function Contact({ showForm = false }: ContactProps) {
 
           <div className="pointer-events-none absolute -inset-[2px] rounded-[2.8rem] bg-[linear-gradient(120deg,rgba(217,139,43,.70),rgba(213,163,76,.38),rgba(22,119,154,.70))] opacity-0 blur-xl transition-opacity duration-500 group-hover/contact:opacity-55" />
 
-          <div className="relative overflow-hidden rounded-[calc(2.7rem-1px)] bg-[#07151d]/95 px-7 py-16 shadow-[0_40px_110px_rgba(0,0,0,.24)] backdrop-blur-2xl sm:px-12 sm:py-20">
+          <div
+            className={`relative overflow-hidden rounded-[calc(2.7rem-1px)] bg-[#07151d]/95 shadow-[0_40px_110px_rgba(0,0,0,.24)] backdrop-blur-2xl ${
+              compact && !showForm
+                ? "px-6 py-8 sm:px-10 sm:py-9 lg:px-12 lg:py-10"
+                : "px-7 py-16 sm:px-12 sm:py-20"
+            }`}
+          >
             <div className="absolute -right-24 -top-20 h-80 w-80 opacity-[0.055]">
               <img
                 src={symbol}
@@ -123,20 +137,38 @@ export default function Contact({ showForm = false }: ContactProps) {
                 Let's build something better
               </div>
 
-              <h2 className="mt-7 text-4xl font-semibold leading-[1.02] tracking-[-0.05em] text-white sm:text-5xl md:text-6xl">
-                Ready to build beyond
-                <span className="brand-gradient-text block pb-[0.08em]">
-                  good enough?
+              <h2
+                className={`overflow-visible pb-3 font-semibold leading-[1.1] tracking-[-0.05em] text-white ${
+                  compact && !showForm
+                    ? "mt-5 text-4xl sm:text-5xl md:text-[3.55rem]"
+                    : "mt-7 text-4xl sm:text-5xl md:text-6xl"
+                }`}
+              >
+                <span className="block">Ready to build beyond</span>
+                <span className="block overflow-visible">
+                  <span className="brand-gradient-text inline-block pb-[0.18em] leading-[1.12]">
+                    good enough?
+                  </span>
                 </span>
               </h2>
 
-              <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/55 sm:text-lg">
+              <p
+                className={`mx-auto max-w-2xl text-white/55 ${
+                  compact && !showForm
+                    ? "mt-3 text-sm leading-7 sm:text-base"
+                    : "mt-5 text-base leading-8 sm:text-lg"
+                }`}
+              >
                 Whether you're starting from scratch or improving an existing
                 digital presence, Ascend Logix can help shape the next version
                 of your brand.
               </p>
 
-              <div className="mt-9 flex justify-center">
+              <div
+                className={`flex justify-center ${
+                  compact && !showForm ? "mt-6" : "mt-9"
+                }`}
+              >
                 <Button asChild size="lg">
                   <a href={showForm ? "#contact-form" : "/contact"}>
                     Start the Conversation
@@ -145,12 +177,18 @@ export default function Contact({ showForm = false }: ContactProps) {
                 </Button>
               </div>
 
-              <div className="mx-auto mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
+              <div
+                className={`mx-auto grid max-w-2xl gap-3 sm:grid-cols-2 ${
+                  compact && !showForm ? "mt-6" : "mt-8"
+                }`}
+              >
                 <a
                   href={facebookUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055]"
+                  className={`flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055] ${
+                    compact && !showForm ? "py-3" : "py-4"
+                  }`}
                 >
                   <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
                     <Facebook className="h-4.5 w-4.5 text-[#dfa047]" />
@@ -170,7 +208,9 @@ export default function Contact({ showForm = false }: ContactProps) {
                   href={instagramUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055]"
+                  className={`flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055] ${
+                    compact && !showForm ? "py-3" : "py-4"
+                  }`}
                 >
                   <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
                     <Instagram className="h-4.5 w-4.5 text-[#dfa047]" />

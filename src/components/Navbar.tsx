@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import symbol from "@/assets/ascend-symbol.png";
+import symbol from "@/assets/ascend-Horizontal.png";
 
 const links = [
   { label: "Home", href: "/" },
@@ -33,15 +33,14 @@ export default function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
         <a
           href="/"
-          className="group/logo relative z-50 flex items-center"
+          className="relative z-50 flex items-center"
           aria-label="Ascend Logix home"
         >
           <img
             src={symbol}
             alt="Ascend Logix"
-            className="h-10 w-10 object-contain sm:h-11 sm:w-11"
+            className="h-10 w-10 object-contain sm:h-40 sm:w-40"
           />
-          <span className="pointer-events-none absolute -bottom-2 left-1/2 h-px w-0 -translate-x-1/2 bg-[linear-gradient(90deg,#d98b2b,#d5a34c,#1680a5)] shadow-[0_0_8px_rgba(217,139,43,.7),0_0_12px_rgba(22,128,165,.55)] transition-all duration-300 group-hover/logo:w-full" />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -49,10 +48,18 @@ export default function Navbar() {
             <a
               key={link.label}
               href={link.href}
-              className="group/nav relative py-2 text-sm font-medium text-white/70 transition-[color,text-shadow] duration-300 hover:text-white hover:[text-shadow:0_0_12px_rgba(217,139,43,.45)]"
+              className="group/nav relative py-2 text-sm font-medium"
             >
-              {link.label}
-              <span className="pointer-events-none absolute inset-x-0 bottom-0 mx-auto h-px w-0 bg-[linear-gradient(90deg,#d98b2b,#d5a34c,#1680a5)] shadow-[0_0_8px_rgba(217,139,43,.72),0_0_12px_rgba(22,128,165,.55)] transition-all duration-300 group-hover/nav:w-full" />
+              <span className="block text-white/70 transition-opacity duration-300 group-hover/nav:opacity-0">
+                {link.label}
+              </span>
+
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 flex items-center bg-[linear-gradient(90deg,#f0b14f_0%,#d98b2b_28%,#d5a34c_46%,#1680a5_72%,#4ca9c8_100%)] bg-clip-text text-transparent opacity-0 transition-opacity duration-300 group-hover/nav:opacity-100 [filter:drop-shadow(0_0_6px_rgba(217,139,43,.55))_drop-shadow(0_0_11px_rgba(22,128,165,.42))]"
+              >
+                {link.label}
+              </span>
             </a>
           ))}
         </nav>
@@ -83,18 +90,26 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`group/mobile relative flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-medium text-white/72 transition-[color,background-color,text-shadow] duration-300 hover:bg-white/[0.055] hover:text-white hover:[text-shadow:0_0_12px_rgba(217,139,43,.42)] ${
+                  className={`group/mobile relative flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-medium transition-colors duration-300 hover:bg-white/[0.055] ${
                     index !== links.length - 1
                       ? "border-b border-white/[0.045]"
                       : ""
                   }`}
                 >
                   <span className="relative">
-                    {link.label}
-                    <span className="pointer-events-none absolute -bottom-1.5 left-0 h-px w-0 bg-[linear-gradient(90deg,#d98b2b,#d5a34c,#1680a5)] shadow-[0_0_8px_rgba(217,139,43,.72),0_0_12px_rgba(22,128,165,.55)] transition-all duration-300 group-hover/mobile:w-full" />
+                    <span className="block text-white/72 transition-opacity duration-300 group-hover/mobile:opacity-0">
+                      {link.label}
+                    </span>
+
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#f0b14f_0%,#d98b2b_28%,#d5a34c_46%,#1680a5_72%,#4ca9c8_100%)] bg-clip-text text-transparent opacity-0 transition-opacity duration-300 group-hover/mobile:opacity-100 [filter:drop-shadow(0_0_6px_rgba(217,139,43,.55))_drop-shadow(0_0_11px_rgba(22,128,165,.42))]"
+                    >
+                      {link.label}
+                    </span>
                   </span>
 
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/12 transition-[background-color,box-shadow] duration-300 group-hover/mobile:bg-[#d98b2b] group-hover/mobile:shadow-[0_0_10px_rgba(217,139,43,.75)]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/12 transition-[background-color,box-shadow] duration-300 group-hover/mobile:bg-[#d98b2b] group-hover/mobile:shadow-[0_0_10px_rgba(217,139,43,.75),0_0_14px_rgba(22,128,165,.40)]" />
                 </a>
               ))}
             </nav>

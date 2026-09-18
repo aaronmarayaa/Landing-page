@@ -58,11 +58,24 @@ export default function App() {
       <Comparison />
 
       <div className="relative isolate">
-        <div className="sticky top-0 z-0 flex min-h-[100svh] items-center">
+        {/*
+          On phones/tablets the Contact section stays in normal document flow,
+          so none of its content can be trapped below the viewport.
+
+          On desktop it becomes sticky for the card-stacking effect, but uses
+          the compact homepage version so the full card fits on screen before
+          the Footer begins to cover it.
+        */}
+        <div className="relative z-0 lg:sticky lg:top-0 lg:flex lg:min-h-[100svh] lg:items-center">
           <div className="w-full">
-            <Contact />
+            <Contact compact />
           </div>
         </div>
+
+        <div
+          aria-hidden="true"
+          className="relative z-0 hidden h-[42svh] lg:block"
+        />
 
         <div className="relative z-10">
           <Footer />

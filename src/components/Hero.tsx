@@ -30,14 +30,16 @@ export default function Hero() {
           transition={{ duration: 0.75 }}
           className="relative z-10"
         >
-          <h1 className="max-w-4xl overflow-visible text-5xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:text-6xl md:text-7xl xl:text-[5.9rem]">
-            Build beyond
-            <span className="brand-gradient-text block pb-[0.10em]">
-              good enough.
+          <h1 className="max-w-4xl overflow-visible pb-3 text-5xl font-semibold leading-[1.1] tracking-[-0.05em] text-white sm:text-6xl md:text-7xl xl:text-[5.9rem]">
+            <span className="block">Build beyond</span>
+            <span className="block overflow-visible">
+              <span className="brand-gradient-text inline-block pb-[0.18em] leading-[1.12]">
+                good enough.
+              </span>
             </span>
           </h1>
 
-          <p className="mt-7 max-w-2xl text-base leading-8 text-white/64 sm:text-lg">
+          <p className="mt-5 max-w-2xl text-base leading-8 text-white/64 sm:text-lg">
             Ascend Logix creates modern websites, powerful digital experiences,
             and strategic marketing solutions designed to help businesses move
             forward with confidence.
