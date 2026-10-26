@@ -10,7 +10,8 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ServicesPage from "@/pages/ServicesPage";
 import ContactPage from "@/pages/ContactPage";
-import { useEffect, type ReactNode } from "react";
+import PaymentPage from "@/pages/PaymentPage";
+import { useEffect, useRef, type ReactNode } from "react";
 
 function currentPath() {
   const path = window.location.pathname.replace(/\/+$/, "");
@@ -29,6 +30,25 @@ function StandardPage({ children }: { children: ReactNode }) {
 
 export default function App() {
   const path = currentPath();
+  const contactStackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const contactStack = contactStackRef.current;
+    if (!contactStack) return;
+
+    const updateHeight = () => {
+      contactStack.style.setProperty(
+        "--contact-height",
+        `${contactStack.offsetHeight}px`
+      );
+    };
+
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(contactStack);
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (path !== "/" || !window.location.hash) return;
@@ -67,6 +87,14 @@ export default function App() {
     };
   }, [path]);
 
+  if (path === "/payment") {
+    return (
+      <StandardPage>
+        <PaymentPage />
+      </StandardPage>
+    );
+  }
+
   if (path === "/services") {
     return (
       <StandardPage>
@@ -95,15 +123,10 @@ export default function App() {
       <Comparison />
 
       <div className="relative isolate">
-        {/*
-          On phones/tablets the Contact section stays in normal document flow,
-          so none of its content can be trapped below the viewport.
-
-          On desktop it becomes sticky for the card-stacking effect, but uses
-          the compact homepage version so the full card fits on screen before
-          the Footer begins to cover it.
-        */}
-        <div className="relative z-0 lg:sticky lg:top-0 lg:flex lg:min-h-[100svh] lg:items-center">
+        <div
+          ref={contactStackRef}
+          className="relative z-0 lg:sticky lg:top-[min(0px,calc(100svh-var(--contact-height,100svh)))] lg:flex lg:min-h-[100svh] lg:items-center"
+        >
           <div className="w-full">
             <Contact compact />
           </div>

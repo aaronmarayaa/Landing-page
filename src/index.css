@@ -51,6 +51,21 @@ select {
   color: transparent;
 }
 
+.payment-gradient-button {
+  position: relative;
+  isolation: isolate;
+}
+
+.payment-gradient-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: rgb(0 0 0 / 35%);
+  pointer-events: none;
+}
+
 .grid-bg {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),

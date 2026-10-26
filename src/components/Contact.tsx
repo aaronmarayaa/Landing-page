@@ -9,21 +9,23 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhoneInput from "@/components/PhoneInput";
+import { sendContactInquiry } from "@/lib/contactInquiry";
 import symbol from "@/assets/ascend-symbol.png";
 
 const facebookUrl =
   "https://www.facebook.com/profile.php?id=61572951032170";
 const instagramUrl = "https://www.instagram.com/ascendlogix/";
 
-
 type ContactProps = {
   showForm?: boolean;
   compact?: boolean;
+  customInquiry?: boolean;
 };
 
 export default function Contact({
   showForm = false,
   compact = false,
+  customInquiry = false,
 }: ContactProps) {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">(
     "idle"
@@ -46,37 +48,12 @@ export default function Contact({
     const formData = new FormData(form);
     const honey = String(formData.get("_honey") || "");
 
-    if (honey) return;
-
-    const payload = {
-      _subject: "New Ascend Logix Website Inquiry",
-      _template: "table",
-      first_name: String(formData.get("firstName") || ""),
-      last_name: String(formData.get("lastName") || ""),
-      email: String(formData.get("email") || ""),
-      phone_country: String(formData.get("phoneCountry") || ""),
-      phone_number: String(formData.get("phone") || ""),
-      message: String(formData.get("message") || ""),
-    };
+    if (honey || status === "sending") return;
 
     try {
       setStatus("sending");
 
-      const response = await fetch(
-        "https://formsubmit.co/ajax/ascendlogix.ca@gmail.com",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Message could not be sent.");
-      }
+      await sendContactInquiry(formData, showForm, customInquiry);
 
       setStatus("success");
       form.reset();
@@ -88,7 +65,7 @@ export default function Contact({
   return (
     <section
       id="contact"
-      className={`relative overflow-hidden ${
+      className={`relative isolate overflow-hidden ${
         showForm
           ? "pb-24 pt-28 sm:pb-32 sm:pt-32"
           : compact
@@ -132,16 +109,18 @@ export default function Contact({
             </div>
 
             <div className="relative mx-auto max-w-3xl text-center">
-              <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/52">
-                <Sparkles className="h-4 w-4 text-[#e1a047]" />
-                Let's build something better
-              </div>
+              {showForm && (
+                <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/52">
+                  <Sparkles className="h-4 w-4 text-[#e1a047]" />
+                  Let's build something better
+                </div>
+              )}
 
               <h2
-                className={`overflow-visible pb-3 font-semibold leading-[1.1] tracking-[-0.05em] text-white ${
+                className={`overflow-visible pb-3 font-semibold leading-[1.1] tracking-[-0.05em] text-white ${showForm ? "mt-7" : ""} ${
                   compact && !showForm
-                    ? "mt-5 text-4xl sm:text-5xl md:text-[3.55rem]"
-                    : "mt-7 text-4xl sm:text-5xl md:text-6xl"
+                    ? "text-4xl sm:text-5xl md:text-[3.55rem]"
+                    : "text-4xl sm:text-5xl md:text-6xl"
                 }`}
               >
                 <span className="block">Ready to build beyond</span>
@@ -164,192 +143,251 @@ export default function Contact({
                 of your brand.
               </p>
 
-              <div
-                className={`flex justify-center ${
-                  compact && !showForm ? "mt-6" : "mt-9"
-                }`}
-              >
-                <Button asChild size="lg">
-                  <a href={showForm ? "#contact-form" : "/contact"}>
-                    Start the Conversation
-                    <ArrowRight className="h-4 w-4" />
+              {showForm && (
+                <div className="mt-9 flex justify-center">
+                  <Button asChild size="lg">
+                    <a href="#contact-form">
+                      Start the Conversation
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
+              )}
+
+              {showForm && (
+                <div className="mx-auto mt-8 grid max-w-2xl gap-3 sm:grid-cols-2">
+                  <a
+                    href={facebookUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055]"
+                  >
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
+                      <Facebook className="h-4.5 w-4.5 text-[#dfa047]" />
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30">
+                        Facebook
+                      </p>
+                      <p className="mt-1 text-sm font-medium text-white/72">
+                        Ascend Logix
+                      </p>
+                    </div>
                   </a>
-                </Button>
-              </div>
 
-              <div
-                className={`mx-auto grid max-w-2xl gap-3 sm:grid-cols-2 ${
-                  compact && !showForm ? "mt-6" : "mt-8"
-                }`}
-              >
-                <a
-                  href={facebookUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055] ${
-                    compact && !showForm ? "py-3" : "py-4"
-                  }`}
-                >
-                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
-                    <Facebook className="h-4.5 w-4.5 text-[#dfa047]" />
-                  </div>
+                  <a
+                    href={instagramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 py-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055]"
+                  >
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
+                      <Instagram className="h-4.5 w-4.5 text-[#dfa047]" />
+                    </div>
 
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30">
-                      Facebook
-                    </p>
-                    <p className="mt-1 text-sm font-medium text-white/72">
-                      Ascend Logix
-                    </p>
-                  </div>
-                </a>
-
-                <a
-                  href={instagramUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`flex items-center gap-3 rounded-2xl border border-white/[0.09] bg-white/[0.03] px-4 text-left transition-colors duration-300 hover:border-white/18 hover:bg-white/[0.055] ${
-                    compact && !showForm ? "py-3" : "py-4"
-                  }`}
-                >
-                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/[0.08] bg-white/[0.04]">
-                    <Instagram className="h-4.5 w-4.5 text-[#dfa047]" />
-                  </div>
-
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30">
-                      Instagram
-                    </p>
-                    <p className="mt-1 truncate text-sm font-medium text-white/72">
-                      @ascendlogix
-                    </p>
-                  </div>
-                </a>
-              </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30">
+                        Instagram
+                      </p>
+                      <p className="mt-1 truncate text-sm font-medium text-white/72">
+                        @ascendlogix
+                      </p>
+                    </div>
+                  </a>
+                </div>
+              )}
             </div>
 
-            {showForm && (
-              <div
-                id="contact-form"
-                className="relative mx-auto mt-14 max-w-4xl scroll-mt-28 border-t border-white/[0.08] pt-12"
-              >
+            <div
+              id="contact-form"
+              className={`relative mx-auto scroll-mt-28 ${
+                showForm
+                  ? "mt-14 max-w-4xl border-t border-white/[0.08] pt-12"
+                  : "mt-8 max-w-2xl"
+              }`}
+            >
+              {showForm && (
                 <div className="mx-auto max-w-2xl text-center">
                   <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#d98b2b]">
                     Tell us about your project
                   </p>
                   <h3 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-                    Send us a message.
+                    {customInquiry ? "Let's discuss your custom project." : "Send us a message."}
                   </h3>
                   <p className="mt-4 text-sm leading-7 text-white/45 sm:text-base">
-                    Share a few details and we'll have the information needed to
-                    start the conversation.
+                    {customInquiry
+                      ? "Share your requirements and any budget or timeline you have in mind. We'll discuss the scope and pricing with you before any payment."
+                      : "Share a few details and we'll have the information needed to start the conversation."}
                   </p>
                 </div>
+              )}
 
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto mt-9 grid max-w-3xl gap-5"
-                >
-                  <input
-                    type="text"
-                    name="_honey"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    className="hidden"
-                    aria-hidden="true"
-                  />
+              <form
+                onSubmit={handleSubmit}
+                aria-busy={status === "sending"}
+                className={`mx-auto grid max-w-3xl gap-5 ${showForm ? "mt-9" : ""}`}
+              >
+                <input
+                  type="text"
+                  name="_honey"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  className="hidden"
+                  aria-hidden="true"
+                />
 
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <label className="grid gap-2 text-left">
-                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-white/42">
-                        First name
-                      </span>
-                      <input
-                        required
-                        name="firstName"
-                        type="text"
-                        autoComplete="given-name"
-                        placeholder="First name"
-                        className="h-13 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/22 focus:border-[#d98b2b]/55 focus:bg-white/[0.06]"
-                      />
-                    </label>
+                {customInquiry && (
+                  <label className="grid min-w-0 gap-2 text-left">
+                    <span className="text-sm font-medium text-white/75">Selected plan</span>
+                    <input
+                      name="plan"
+                      value="Custom"
+                      readOnly
+                      className="h-13 min-w-0 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none focus:border-[#d98b2b]/75"
+                    />
+                  </label>
+                )}
 
-                    <label className="grid gap-2 text-left">
-                      <span className="text-xs font-semibold uppercase tracking-[0.12em] text-white/42">
-                        Last name
-                      </span>
-                      <input
-                        required
-                        name="lastName"
-                        type="text"
-                        autoComplete="family-name"
-                        placeholder="Last name"
-                        className="h-13 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/22 focus:border-[#d98b2b]/55 focus:bg-white/[0.06]"
-                      />
-                    </label>
-                  </div>
-
-                  <label className="grid gap-2 text-left">
-                    <span className="text-xs font-semibold uppercase tracking-[0.12em] text-white/42">
-                      Email
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="grid min-w-0 gap-2 text-left">
+                    <span className="text-sm font-medium text-white/75">
+                      {showForm ? "First name" : "Name"}
                     </span>
                     <input
                       required
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      placeholder="you@example.com"
-                      className="h-13 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/22 focus:border-[#d98b2b]/55 focus:bg-white/[0.06]"
+                      name={showForm ? "firstName" : "name"}
+                      type="text"
+                      autoComplete={showForm ? "given-name" : "name"}
+                      placeholder={showForm ? "First name" : "Your name"}
+                      className="h-13 min-w-0 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/50 focus:border-[#d98b2b]/75 focus:bg-white/[0.06]"
                     />
                   </label>
 
-                  <PhoneInput />
-
-                  <label className="grid gap-2 text-left">
-                    <span className="text-xs font-semibold uppercase tracking-[0.12em] text-white/42">
-                      Message
+                  <label className="grid min-w-0 gap-2 text-left">
+                    <span className="text-sm font-medium text-white/75">
+                      {showForm ? "Last name" : "Phone Number"}
                     </span>
-                    <textarea
+                    <input
                       required
-                      name="message"
-                      rows={7}
-                      placeholder="Tell us about your project, goals, or what you need help with."
-                      className="resize-y rounded-[1.35rem] border border-white/[0.10] bg-white/[0.045] px-4 py-4 text-sm leading-7 text-white outline-none transition placeholder:text-white/22 focus:border-[#d98b2b]/55 focus:bg-white/[0.06]"
+                      name={showForm ? "lastName" : "phone"}
+                      type={showForm ? "text" : "tel"}
+                      autoComplete={showForm ? "family-name" : "tel"}
+                      placeholder={showForm ? "Last name" : "Your phone number"}
+                      className="h-13 min-w-0 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/50 focus:border-[#d98b2b]/75 focus:bg-white/[0.06]"
                     />
                   </label>
+                </div>
 
-                  <div className="mt-1 flex flex-col items-center gap-4">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={status === "sending"}
+                <label className="grid min-w-0 gap-2 text-left">
+                  <span className="text-sm font-medium text-white/75">
+                    Email
+                  </span>
+                  <input
+                    required
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    className="h-13 min-w-0 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/50 focus:border-[#d98b2b]/75 focus:bg-white/[0.06]"
+                  />
+                </label>
+
+                {showForm ? (
+                  <PhoneInput />
+                ) : (
+                  <label className="grid min-w-0 gap-2 text-left">
+                    <span className="text-sm font-medium text-white/75">
+                      City
+                    </span>
+                    <input
+                      required
+                      name="city"
+                      type="text"
+                      autoComplete="address-level2"
+                      placeholder="Your city"
+                      className="h-13 min-w-0 rounded-2xl border border-white/[0.10] bg-white/[0.045] px-4 text-sm text-white outline-none transition placeholder:text-white/50 focus:border-[#d98b2b]/75 focus:bg-white/[0.06]"
+                    />
+                  </label>
+                )}
+
+                <label className="grid min-w-0 gap-2 text-left">
+                  <span className="text-sm font-medium text-white/75">
+                    {customInquiry ? "Project details" : "Message"}
+                  </span>
+                  <textarea
+                    required
+                    name="message"
+                    rows={showForm ? 7 : 4}
+                    placeholder={customInquiry
+                      ? "Describe your project, features, integrations, and any budget or timeline you have in mind."
+                      : "Tell us about your project, goals, or what you need help with."}
+                    className="min-w-0 resize-y rounded-[1.35rem] border border-white/[0.10] bg-white/[0.045] px-4 py-4 text-sm leading-7 text-white outline-none transition placeholder:text-white/50 focus:border-[#d98b2b]/75 focus:bg-white/[0.06]"
+                  />
+                </label>
+
+                {customInquiry && (
+                  <p className="text-left text-sm leading-6 text-[#b8c4cb]">
+                    Your project details will also be emailed to{" "}
+                    <a
+                      href="mailto:ascendlogix.clients@gmail.com"
+                      className="break-all rounded-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6a141]"
                     >
-                      {status === "sending" ? (
-                        "Sending..."
-                      ) : (
+                      ascendlogix.clients@gmail.com
+                    </a>{" "}
+                    so our team can follow up with you.
+                  </p>
+                )}
+
+                <div className="mt-1 flex flex-col items-center gap-4">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className={
+                      showForm
+                        ? undefined
+                        : "bg-[#dfa047] bg-none text-[#06141d] hover:bg-[#edb15a]"
+                    }
+                    disabled={status === "sending"}
+                  >
+                    {status === "sending" ? (
+                      "Sending..."
+                    ) : (
+                      <>
+                        {customInquiry ? "Send Custom Inquiry" : "Send Message"}
+                        <Send className="h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
+
+                  {status === "success" && (
+                    <div
+                      role="status"
+                      className="flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/8 px-4 py-2 text-sm text-emerald-200"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      {customInquiry
+                        ? "Custom inquiry submitted. We'll follow up by email."
+                        : "Message sent successfully."}
+                    </div>
+                  )}
+
+                  {status === "error" && (
+                    <p role="alert" className="text-center text-sm text-rose-300">
+                      We couldn't submit your message. Please try again.
+                      {customInquiry && (
                         <>
-                          Send Message
-                          <Send className="h-4 w-4" />
+                          {" "}You can also email{" "}
+                          <a href="mailto:ascendlogix.clients@gmail.com" className="break-all underline underline-offset-4">
+                            ascendlogix.clients@gmail.com
+                          </a>.
                         </>
                       )}
-                    </Button>
-
-                    {status === "success" && (
-                      <div className="flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/8 px-4 py-2 text-sm text-emerald-200">
-                        <CheckCircle2 className="h-4 w-4" />
-                        Message sent successfully.
-                      </div>
-                    )}
-
-                    {status === "error" && (
-                      <p className="text-center text-sm text-rose-300">
-                        We couldn't send the message. Please try again.
-                      </p>
-                    )}
-                  </div>
-                </form>
-              </div>
-            )}
+                    </p>
+                  )}
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

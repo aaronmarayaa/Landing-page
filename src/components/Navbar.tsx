@@ -77,7 +77,7 @@ export default function Navbar() {
           <img
             src={symbol}
             alt="Ascend Logix"
-            className="h-35 w-35 object-contain sm:h-35 sm:w-35"
+            className="h-28 w-28 object-contain md:h-35 md:w-35"
           />
         </a>
 
@@ -103,9 +103,18 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
-          <Button asChild size="sm">
-            <a href="/contact">Let's Talk</a>
+        <div className="ml-auto mr-3 md:ml-0 md:mr-0">
+          <Button
+            asChild
+            size="sm"
+            className="payment-gradient-button h-11 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6a141]"
+          >
+            <a
+              href="/payment"
+              aria-current={window.location.pathname.replace(/\/+$/, "") === "/payment" ? "page" : undefined}
+            >
+              Upgrade
+            </a>
           </Button>
         </div>
 
