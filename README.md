@@ -85,39 +85,39 @@ This makes it easy to replace text without touching the page structure.
 
 This version includes hover-activated traveling circuit lights in the service cards and a new Ascend Logix central-network section.
 
-## Payment plans
+## Monthly Website Management Plans
 
 The header's **Upgrade** button opens `/payment` on desktop and mobile.
 
-- **Standard:** hosting for business websites, portfolios, and landing pages.
-- **Premium:** hosting for websites and web apps, such as customer portals, booking tools, and dashboards.
-- **Custom:** a conversation about project requirements, scope, and pricing through the contact form.
+- **Essential:** $30/month for simple informational websites.
+- **Business:** $59/month for growing small businesses.
+- **Business Plus:** $99/month for websites with interactive features.
+- **Custom:** scope and pricing are discussed for stores and custom platforms.
 
-The product links are defined in `src/pages/PaymentPage.tsx`. Standard and Premium currently open Stripe sandbox subscriptions. Replace those two links with live Stripe Payment Links before accepting real payments. The test-mode notice has been removed from the page as requested. Prices, currency, and recurring billing details are reviewed on Stripe. Custom opens the contact form. This site does not collect card details or require a Stripe secret key.
+Plan names, prices, audience descriptions, feature lists, and Stripe links are defined in `src/lib/managementPlans.ts`. All content and amounts follow the supplied management-plan brief. Prices display the supplied dollar symbol; Stripe displays checkout currency and billing details. The three paid tiers use their newly supplied Stripe sandbox links. Custom opens the contact form. The initial duplicate Business URL was replaced with the user's corrected Business link ending in `gQE05`, verified to open Subscribe to Business.
 
-Hostinger's website and web-app counts describe hosting capacity, so the page does not present them as a per-customer entitlement or promise unlimited project builds. The distinction follows [Hostinger's web-app hosting documentation](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/). Example app features describe suitable uses, rather than automatically included development work.
+Replace the three test links with live links before accepting real payments. The page keeps the requested gradient hover animation and omits the removed test-mode notice. No card details or Stripe secret keys are collected by this site.
 
 ### Payment-page design and verification
 
 Reading this as a plan selection page for Ascend Logix customers, using the site's existing navy, amber, and teal identity. Dials: ENERGY 2 / RHYTHM 2 / MOTION 1.
 
-- Navy and the existing sans-serif type keep the page consistent with the site; the existing animated amber-to-teal button gradient connects Upgrade with all three choices. A dark overlay keeps white button labels readable across the gradient.
-- Three equally weighted cards present the three requested choices without inventing a recommended tier. Cards stack on phones, show Custom across both tablet columns, and form three columns from 1024px.
-- A large heading establishes the page's purpose; shorter card copy puts the plan choice first. Spacing separates the introduction, selection, and billing explanation.
-- Website, app, conversation, and lock icons identify product types, the Custom discussion, and the Stripe handoff. Only hover and focus transitions are added; no decorative assets or animation are needed.
+- Navy, the existing sans-serif type, and the requested amber-to-teal button gradient preserve the established site identity; a dark overlay keeps labels readable.
+- Four equally weighted cards reflect the four supplied plans, with no invented recommended tier. The layout uses one column on phones, two from 768px, and four from 1280px so feature lists remain readable.
+- Plan names and prices establish comparison hierarchy; the user's full feature lists follow, and aligned buttons make each action easy to find. Custom displays conversation-based pricing rather than an invented amount.
+- Checkmarks identify included services. Each card is one native link, with the gradient Choose label retained as a visual button inside it. Cards grow by 2% on hover to identify the full click target; this effect is limited to fine pointers with hover support. Keyboard focus outlines the whole card, and reduced-motion settings disable the enlargement.
 
-Verified locally on 2026-10-26:
+Verification for the current management-plan update:
 
 - PASS, build: `npm run build` completes with TypeScript and Vite.
-- PASS, navigation: header Upgrade opens `/payment`; the help link opens `/contact`; Upgrade returns from Contact to the payment page.
-- PASS, checkout: Choose Standard opens the supplied Standard Stripe link and shows Subscribe to Standard; Choose Premium opens the supplied Premium link and shows Subscribe to Premium. Both display Sandbox and monthly billing. No payment information was entered or submitted.
-- PASS, responsive layout: checked 320, 375, 600, 768, 1024, and 1440px widths; no horizontal overflow, cards stack or align as intended, and Upgrade remains visible. Both checkout links have 48px tap targets; Upgrade and the mobile menu have 44px targets.
-- PASS, keyboard: Tab advances from Upgrade to Choose Standard to Choose Premium, with solid visible focus outlines on the plan links. The mobile menu opens and closes.
-- PASS, runtime: no local application console errors. Stripe emits its own sandbox warning that Link is not activated for live payments.
-- PASS, hard gate: product names and checkout destinations match Stripe; recurring billing is disclosed and the page notice was removed at the user's request. No card inputs, credentials, invented prices, unsupported capacity promises, or custom visual assets are added. Content is static, so fetch/loading/error states do not apply.
-- PASS, purpose gate: palette, type, equal card layout, icons, and motion have the reasons recorded above; the gradient buttons use a dark overlay for label contrast and no decorative page backgrounds are added.
-- PASS, liveliness: the declared dials match the prominent brand-colored headline, three product choices, quiet billing explanation, and hover-only motion.
-- PASS, craftsmanship: all added controls have working destinations; the implementation reuses the existing page shell, header, footer, and responsive type system.
-- PASS, button update: the page notice is absent; Upgrade and both Choose links use the same 200%-width brand gradient and 700ms hover transition. Checked the rendered styles, unchanged destinations, zero console errors, and 320px mobile fit with 44px/48px button heights. Reduced-motion support is retained through the existing stylesheet.
-- PASS, Custom navigation and validation: clicking Choose Custom opens the contact page with the Custom value read-only, custom project instructions, the clients email, and Send Custom Inquiry. Submitting an empty form focuses First name and blocks the request through required-field validation. Custom form fits at 320px; all three plan cards fit at 320, 600, 768, 1024, and 1440px without horizontal overflow. No local application console errors were observed.
-- PASS, submission routing: five tests exercise the actual submission helper with local mock responses, covering the clients CC plus full details, general inquiry routing, compact homepage fields, HTTP/provider/JSON failures, and network failures. No test messages were sent to FormSubmit or the mailboxes; activation and actual mailbox delivery remain unverified.
+- PASS, content: the page shows the requested heading, introduction, Essential $30, Business $59, Business Plus $99, and Custom description. All 27 supplied feature entries are present across the four cards (6/7/7/7).
+- PASS, responsive layout: checked 320, 375, 600, 768, 1024, 1280, and 1440px widths with no horizontal overflow; the grid changes from one to two to four columns.
+- PASS, keyboard: Tab from Choose Essential focuses Choose Business with a solid 2px outline.
+- PASS, subscription routing: Essential and Business Plus checkout pages show their matching product names and monthly billing; the corrected Choose Business button opens Subscribe to Business. No card or customer details were entered.
+- PASS, inquiry routing: Choose Custom opens the contact page with Custom selected, the clients email displayed, and Send Custom Inquiry. An empty submission focuses First name and blocks the request. The original clients-inbox copy remains in place.
+- PASS, submission tests: the five existing tests verify the submission helper with local mock responses, including custom CC, general and compact forms, provider failures, and network failures. Inbox delivery remains unverified; no test emails were sent.
+- PASS, hard gate: all plan details come from the user's brief, links match the supplied tiers, monthly billing is clear, and form loading/error/accepted states remain in place. No payment credentials or invented prices are added.
+- PASS, purpose gate: the palette, comparison grid, checkmarks, typography, and requested gradient motion serve the recorded purposes above.
+- PASS, liveliness: the declared dials match the brand-colored title, prominent prices, complete feature lists, and hover-only animation.
+- PASS, craftsmanship: the existing page shell and contact flow are reused, pricing comes from one catalog, and each button has a working destination.
+- PASS, clickable-card update: clicking Essential feature text, the Business and Business Plus titles, and the Custom title opens each matching destination. Hovering Essential produces a computed 1.02 scale. Tab moves to the next card with a solid 2px outline. At 320, 768, and 1280px, all four links fit without horizontal overflow; there are no nested links or buttons. No local application console errors were observed. Existing reduced-motion CSS disables the hover scale.

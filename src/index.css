@@ -66,6 +66,35 @@ select {
   pointer-events: none;
 }
 
+.payment-plan-card {
+  position: relative;
+  transition:
+    transform 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.payment-plan-card:focus-visible {
+  outline: 2px solid #e6a141;
+  outline-offset: 5px;
+  border-color: #e6a141;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .payment-plan-card:hover {
+    z-index: 1;
+    transform: scale(1.02);
+    border-color: #a07c48;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 20%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payment-plan-card:hover {
+    transform: none;
+  }
+}
+
 .grid-bg {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
