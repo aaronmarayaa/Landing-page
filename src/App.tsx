@@ -10,7 +10,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ServicesPage from "@/pages/ServicesPage";
 import ContactPage from "@/pages/ContactPage";
-import PaymentPage from "@/pages/PaymentPage";
+import PlansPage from "@/pages/PlansPage";
 import { useEffect, useRef, type ReactNode } from "react";
 
 function currentPath() {
@@ -31,6 +31,12 @@ function StandardPage({ children }: { children: ReactNode }) {
 export default function App() {
   const path = currentPath();
   const contactStackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (path === "/payment") {
+      window.location.replace(`/plans${window.location.search}${window.location.hash}`);
+    }
+  }, [path]);
 
   useEffect(() => {
     const contactStack = contactStackRef.current;
@@ -87,10 +93,10 @@ export default function App() {
     };
   }, [path]);
 
-  if (path === "/payment") {
+  if (path === "/plans" || path === "/payment") {
     return (
       <StandardPage>
-        <PaymentPage />
+        <PlansPage />
       </StandardPage>
     );
   }

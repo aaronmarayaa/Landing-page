@@ -3,7 +3,7 @@ export const managementPlans = [
     slug: "essential",
     name: "Essential",
     monthlyPrice: 30,
-    checkoutUrl: "https://buy.stripe.com/test_fZu14nc0j0UI4s8fuFgQE02",
+    checkoutUrl: "https://buy.stripe.com/8x27sE5I9gSM6yg7i6bbG01",
     audience: "For simple informational websites",
     description: null,
     features: [
@@ -19,7 +19,7 @@ export const managementPlans = [
     slug: "business",
     name: "Business",
     monthlyPrice: 59,
-    checkoutUrl: "https://buy.stripe.com/test_8x27sLaWfgTG1fW82dgQE05",
+    checkoutUrl: "https://buy.stripe.com/3cIeV6eeF5a45uc0TIbbG02",
     audience: "For growing small businesses",
     description: null,
     features: [
@@ -36,7 +36,7 @@ export const managementPlans = [
     slug: "business-plus",
     name: "Business Plus",
     monthlyPrice: 99,
-    checkoutUrl: "https://buy.stripe.com/test_aFa4gz3tNbzm8IogyJgQE04",
+    checkoutUrl: "https://buy.stripe.com/9B68wI9Yp31WbSA7i6bbG03",
     audience: "For websites with interactive features",
     description: null,
     features: [

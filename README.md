@@ -87,18 +87,22 @@ This version includes hover-activated traveling circuit lights in the service ca
 
 ## Monthly Website Management Plans
 
-The header's **Upgrade** button opens `/payment` on desktop and mobile.
+The header's **Plans** navigation link opens `/plans` on desktop and in the mobile menu. The top-right **Let's Talk** button opens `/contact`. Footer navigation also includes Plans. The old `/payment` route redirects to `/plans`; the client fallback preserves the query string and hash, and Netlify has a permanent redirect ahead of the SPA fallback. The page component is `src/pages/PlansPage.tsx`.
 
 - **Essential:** $30/month for simple informational websites.
 - **Business:** $59/month for growing small businesses.
 - **Business Plus:** $99/month for websites with interactive features.
 - **Custom:** scope and pricing are discussed for stores and custom platforms.
 
-Plan names, prices, audience descriptions, feature lists, and Stripe links are defined in `src/lib/managementPlans.ts`. All content and amounts follow the supplied management-plan brief. Prices display the supplied dollar symbol; Stripe displays checkout currency and billing details. The three paid tiers use their newly supplied Stripe sandbox links. Custom opens the contact form. The initial duplicate Business URL was replaced with the user's corrected Business link ending in `gQE05`, verified to open Subscribe to Business.
+Plan names, prices, audience descriptions, feature lists, and Stripe links are defined in `src/lib/managementPlans.ts`. All content and amounts follow the supplied management-plan brief. Prices display the supplied dollar symbol; Stripe displays checkout currency and billing details. The three paid tiers use the user's live Stripe links ending in `bbG01` (Essential), `bbG02` (Business), and `bbG03` (Business Plus). Each paid plan card opens Stripe in a new tab with `noopener noreferrer`. Custom opens the contact form in the current tab.
 
-Replace the three test links with live links before accepting real payments. The page keeps the requested gradient hover animation and omits the removed test-mode notice. No card details or Stripe secret keys are collected by this site.
+The page keeps the requested gradient hover animation and omits the removed test-mode notice. No card details or Stripe secret keys are collected by this site.
 
-### Payment-page design and verification
+The separate checkout explainer is removed. The cancellation disclaimer shares the bottom row with **Need help choosing? Contact us** on wider screens and stacks above it on phones. Paid plan cards reference the disclaimer as their accessible description.
+
+Existing customers can use **Manage subscription** below the plan cards to open the supplied Stripe customer portal in a new tab. Stripe handles email login and billing changes; payment-method updates and subscription cancellation must be enabled in the account's [customer portal settings](https://dashboard.stripe.com/settings/billing/portal). The page introduction describes hosting, domain, and security management, with the double negative corrected to “will be inaccessible.” The bottom disclaimer explains cancellation and service ending.
+
+### Plans-page design and verification
 
 Reading this as a plan selection page for Ascend Logix customers, using the site's existing navy, amber, and teal identity. Dials: ENERGY 2 / RHYTHM 2 / MOTION 1.
 
@@ -121,3 +125,6 @@ Verification for the current management-plan update:
 - PASS, liveliness: the declared dials match the brand-colored title, prominent prices, complete feature lists, and hover-only animation.
 - PASS, craftsmanship: the existing page shell and contact flow are reused, pricing comes from one catalog, and each button has a working destination.
 - PASS, clickable-card update: clicking Essential feature text, the Business and Business Plus titles, and the Custom title opens each matching destination. Hovering Essential produces a computed 1.02 scale. Tab moves to the next card with a solid 2px outline. At 320, 768, and 1280px, all four links fit without horizontal overflow; there are no nested links or buttons. No local application console errors were observed. Existing reduced-motion CSS disables the hover scale.
+- PASS, Plans navigation update: the Contact label “Let's build something better” is removed, and the top-right Let's Talk button opens Contact. Desktop, mobile-menu, and footer Plans links open `/plans`; the mobile menu closes after navigation. Header spacing fits at 320, 768, and 1280px without horizontal overflow. Keyboard focus on Plans has a solid 2px outline. The local `/payment?source=legacy#plans-title` URL redirects to `/plans?source=legacy#plans-title`, and Custom still opens its selected inquiry form. TypeScript/Vite build passes and no browser console errors were observed. The Netlify redirect is configured but has not been deployed in this task.
+- PASS, live Stripe update: Essential, Business, and Business Plus each open the supplied live checkout URL in a separate tab, showing the matching monthly subscription. The original Plans tab stays open. Each paid link uses `target="_blank"` and `rel="noopener noreferrer"`; Custom retains its contact destination in the current tab. TypeScript/Vite build passes. No customer or card details were entered and no payment was made.
+- PASS, customer portal update: Manage subscription opens the supplied Stripe URL in a separate tab showing “Ascend Logix” and the email login form. The revised introduction and cancellation disclaimer are present. At 320, 768, and 1280px there is no horizontal overflow; the portal action is 48px high, fills the phone content width, and has a solid 2px keyboard focus outline. TypeScript/Vite build passes with no local browser console errors observed. Authenticated billing actions and account portal configuration were not tested; no email login request was sent.

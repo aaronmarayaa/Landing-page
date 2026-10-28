@@ -8,12 +8,14 @@ const links = [
   { label: "About Us", href: "/#about" },
   { label: "Work", href: "/#work" },
   { label: "Services", href: "/services" },
+  { label: "Plans", href: "/plans" },
   { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const activePath = window.location.pathname.replace(/\/+$/, "") || "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -81,13 +83,14 @@ export default function Navbar() {
           />
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-5 md:flex lg:gap-8">
           {links.map((link) => (
             <a
               key={link.label}
               href={link.href}
+              aria-current={link.href === activePath ? "page" : undefined}
               onClick={(event) => handleNavClick(event, link.href)}
-              className="group/nav relative py-2 text-sm font-medium"
+              className="group/nav relative flex min-h-11 items-center rounded-sm py-2 text-sm font-medium focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6a141]"
             >
               <span className="block text-white/70 transition-opacity duration-300 group-hover/nav:opacity-0">
                 {link.label}
@@ -107,19 +110,16 @@ export default function Navbar() {
           <Button
             asChild
             size="sm"
-            className="payment-gradient-button h-11 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6a141]"
+            className="payment-gradient-button h-11 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#e6a141]"
           >
-            <a
-              href="/payment"
-              aria-current={window.location.pathname.replace(/\/+$/, "") === "/payment" ? "page" : undefined}
-            >
-              Upgrade
-            </a>
+            <a href="/contact">Let's Talk</a>
           </Button>
         </div>
 
         <button
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls={open ? "mobile-navigation" : undefined}
           onClick={() => setOpen((value) => !value)}
           className="relative z-50 grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,.05)] backdrop-blur-xl transition-[background-color,border-color,box-shadow] hover:border-[#d98b2b]/35 hover:bg-white/[0.10] hover:shadow-[0_0_16px_rgba(217,139,43,.16),0_0_22px_rgba(22,128,165,.14)] md:hidden"
         >
@@ -128,7 +128,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="px-4 pb-4 md:hidden">
+        <div id="mobile-navigation" className="px-4 pb-4 md:hidden">
           <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#07151d]/58 shadow-[0_22px_70px_rgba(0,0,0,.32),inset_0_1px_0_rgba(255,255,255,.05)] backdrop-blur-2xl">
             <div className="pointer-events-none absolute inset-x-4 h-24 bg-[radial-gradient(circle_at_25%_0%,rgba(217,139,43,.10),transparent_46%),radial-gradient(circle_at_80%_0%,rgba(13,89,120,.12),transparent_48%)]" />
 
@@ -137,8 +137,9 @@ export default function Navbar() {
                 <a
                   key={link.label}
                   href={link.href}
+                  aria-current={link.href === activePath ? "page" : undefined}
                   onClick={(event) => handleNavClick(event, link.href)}
-                  className={`group/mobile relative flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-medium transition-colors duration-300 hover:bg-white/[0.055] ${
+                  className={`group/mobile relative flex items-center justify-between rounded-2xl px-4 py-3.5 text-[15px] font-medium transition-colors duration-300 hover:bg-white/[0.055] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#e6a141] ${
                     index !== links.length - 1
                       ? "border-b border-white/[0.045]"
                       : ""

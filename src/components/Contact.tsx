@@ -5,7 +5,6 @@ import {
   Facebook,
   Instagram,
   Send,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PhoneInput from "@/components/PhoneInput";
@@ -109,15 +108,8 @@ export default function Contact({
             </div>
 
             <div className="relative mx-auto max-w-3xl text-center">
-              {showForm && (
-                <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.045] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/52">
-                  <Sparkles className="h-4 w-4 text-[#e1a047]" />
-                  Let's build something better
-                </div>
-              )}
-
               <h2
-                className={`overflow-visible pb-3 font-semibold leading-[1.1] tracking-[-0.05em] text-white ${showForm ? "mt-7" : ""} ${
+                className={`overflow-visible pb-3 font-semibold leading-[1.1] tracking-[-0.05em] text-white ${
                   compact && !showForm
                     ? "text-4xl sm:text-5xl md:text-[3.55rem]"
                     : "text-4xl sm:text-5xl md:text-6xl"
